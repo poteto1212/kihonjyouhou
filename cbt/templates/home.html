@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block selectvar %}
+<div id="form1-container">
+    <div class="form1-search">
+        <p>検索フォーム作成</p>
+        <form id="form1" action="#" method="GET">
+            <input id="sbox" name="search" type="text" placeholder="薬品名・病名">
+            <input id="sbton" type="submit" value="検索">
+        </form>
+    </div>
+    <div class="form2-parentfield">
+        <p>ゾーン選択フォーム</p>
+        <form id="form2" action="#" method="GET">
+            <select id="parentfieldoption">
+                <option></option>
+            </select>
+             <input id="sbton" type="submit" value="検索">
+        </form>
+    </div>
+</div>
+{% endblock selectvar %}
+
+{% block listvar %}
+<p>薬効分類</p>
+<form id=form2 action>
+    <div class="list-group">
+        <a href="#!" class="list-group-item list-group-item-action">分野１</a>
+        <a href="#!" class="list-group-item list-group-item-action">分野2</a>
+    </div>
+</form>
+{% endblock listvar %}
+
+{% block main %}
+<p>メインコンテンツ</p>
+<div class="boxA boxlist">
+問題
+</div>
+<div class="boxB boxlist">
+</div>
+{% endblock main %}
