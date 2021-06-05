@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'da)l)6o9=6!^5u*=y#^tvi+3iu(ezbo*pi**gyu0#425tcjtt#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cbt.apps.CbtConfig',
+    'admin_auto_filters',
+    'dbbackup',
+    'bootstrap4',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'cbtstudy.urls'
@@ -54,7 +61,7 @@ ROOT_URLCONF = 'cbtstudy.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['BASE_DIR','template'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,6 +70,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+        'builtins':[
+            'bootstrap4.templatetags.bootstrap4',
+            ]
         },
     },
 ]
@@ -73,12 +83,21 @@ WSGI_APPLICATION = 'cbtstudy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+elif not DEBUG:
+    import dj_database_url
+    from dotenv import(find_dotenv,load_dotenv)
+    load_dotenv(find_dotenv())
+    DATABASES={
+        'default':dj_database_url.config(conn_max_age=600)
+        }
+    
 
 
 # Password validation
@@ -103,9 +122,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ja'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
@@ -117,4 +136,36 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+#静的ファイル
 STATIC_URL = '/static/'
+STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
+STATICFILES_STRAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+#データベースバックアップファイルの保存先
+DBBACKUP_STORAGE='django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS={'location':os.path.join(BASE_DIR,'backup')}
+
+#画像アップロード設定
+MEDIA_URL='/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+
+
+
+#本番モード
+if not DEBUG:
+    CLOUDINARY_STORAGE={
+    'CLOUD_NAME':'dq80ogcwj',
+    'API_KEY':'557762482239653',
+    'API_SECRET':'t5z17w-GHBV6b3ggyaDozbZxmnQ',
+            
+    }
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+
+
+
+
+
+
+
