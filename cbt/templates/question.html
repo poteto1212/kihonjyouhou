@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block selectvar %}
+<p>各種ボタン</p>
+{% endblock selectvar %}
+
+{% block listvar %}
+<p>関連分野</p>
+
+<div class="list-group">
+    {% for relations in object.relation.all %}
+    <a class="list-group-item list-group-item-action" href="{% url 'cbt:question' relations.pk %}">{{relations.title}}</a>
+    {% endfor %}
+</div>
+
+
+{% endblock listvar %}
+{% block main %}
+<div class=problembox>
+    <div class="titlebox">
+    <h3>{{object.title}}</h3>
+    </div>
+    <div>
+        {% if object.questionimg %}
+        <img src="{{object.questionimg.url}}">
+        {% else %}
+        {{object.questiontxt|linebreaksbr}}
+        {% endif %}
+    </div>
+    <p>解答フォーム</p>
+    <form>
+    </form>
+</div>
+{% endblock main %}

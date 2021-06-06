@@ -59,7 +59,7 @@
 <div class="boxB boxlist">
     <ul>
         {% for questions in question_list %}
-        <li>{{questions.title}}</li>
+        <li><a href="{% url 'cbt:question' questions.pk %}">{{questions.title}}</a></li>
         {% endfor %}
     </ul>
 </div>

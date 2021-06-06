@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView,DetailView
 from .models import Zone,Subject,Field,Detail
 from django.http import HttpResponse
 
@@ -73,3 +73,24 @@ class HomeView(ListView):
         context['default_field']=default_field
         context['question_list']=question_list
         return context
+        
+        
+        
+class QuestionView(DetailView):
+    template_name='question.html'
+    model=Detail   
+        
+        
+   
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
