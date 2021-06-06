@@ -13,32 +13,52 @@
         </form>
     </div>
     <div class="form2-parentfield">
-        <p>ゾーン選択フォーム</p>
-        <form id="form2" action="#" method="GET">
-            <select id="parentfieldoption">
-                <option></option>
-            </select>
-             <input id="sbton" type="submit" value="検索">
+        <p>ゾーンを選択してください</p>
+        <form id="form2" action="{% url 'cbt:home' %}" method="GET">
+            <ul class="zoneselect">
+                {% for zones in zone_list %}
+                <li>
+                    <label class="zonelabel"><input name="getzone" value="{{zones.id}}" type="radio" class="radiozone">{{zones.zones}}</label>
+                </li>
+                {% endfor %}
+            </ul>
+            <input id="sbton" type="submit" value="選択">
         </form>
     </div>
 </div>
 {% endblock selectvar %}
 
 {% block listvar %}
-<p>薬効分類</p>
-<form id=form2 action>
+<p>科目選択</p>
+
     <div class="list-group">
-        <a href="#!" class="list-group-item list-group-item-action">分野１</a>
-        <a href="#!" class="list-group-item list-group-item-action">分野2</a>
+        {% for subjects in subject_list %}
+        <form action="{% url 'cbt:home' %}" method="GET" name="subjectform{{subjects.id}}">
+            <input type="hidden" name="getsubjects" value="{{subjects.id}}">
+            <a href="javascript:subjectform{{subjects.id}}.submit()" class="list-group-item list-group-item-action">{{subjects.subjcs}}</a>
+        </form>
+        {% endfor %}
     </div>
-</form>
 {% endblock listvar %}
 
 {% block main %}
 <p>メインコンテンツ</p>
 <div class="boxA boxlist">
-問題
+    <form method="GET" action="{% url 'cbt:home' %}">
+        <select name="getfield">
+            {% for fields in field_list %}
+            <option value='{{fields.id}}'>{{fields.fields}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="検索">
+        
+    </form>
 </div>
 <div class="boxB boxlist">
+    <ul>
+        {% for questions in question_list %}
+        <li>{{questions.title}}</li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock main %}
