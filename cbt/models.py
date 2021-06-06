@@ -33,10 +33,10 @@ class Subject(models.Model):
         )
     
     def __str__(self):
-        return self.subjcts
+        return self.subjcs
     
     class Meta:
-        verbose_name_plural="分野登録"
+        verbose_name_plural="科目登録"
         
         
 #領域選択モデル
@@ -58,7 +58,7 @@ class Field(models.Model):
         #科目名と分野名の組み合わせ制約
         constraints=[
             models.UniqueConstraint(
-                fields=['subjct','fields']
+                fields=['subjct','fields'],
                 name="subjct_fields_unique"
                 )
             ]
@@ -70,18 +70,44 @@ class Detail(models.Model):
     #貼り付け問題用
     questionimg=models.ImageField(upload_to='questionimage',blank=True,null=True,unique=False)
     #手書き問題用紙
-    questiontxt=models.TextField(verbose_name='手書き解説')
+    questiontxt=models.TextField(verbose_name='手書き問題',blank=True,null=True)
+    
+     
+    #正しい解答の番号ビューで　answer=[正答１,正答2,正答3]
+    #テンプレートから kaitou=[get1,get2,get3]
+    #if分で answer=kaitouである事を照合
+    answernum1=models.IntegerField(verbose_name="正答1",
+        default=1,#選択肢無しは０にする
+        unique=False,
+        validators=[MinValueValidator(1),MaxValueValidator(10)]
+        )
+    answernum2=models.IntegerField(verbose_name="正答2",
+        default=0,#選択肢無しは０にする
+        blank=True,
+        null=True,
+        unique=False,
+        validators=[MinValueValidator(0),MaxValueValidator(10)]
+        )
+    answernum3=models.IntegerField(verbose_name="正答3",
+        default=0,#選択肢無しは０にする
+        blank=True,
+        null=True,
+        unique=False,
+        validators=[MinValueValidator(0),MaxValueValidator(10)]
+        )
+    
     
     #貼り付け解説
     answerimg=models.ImageField(upload_to='answerimage',blank=True,null=True,unique=False)
     #手書き解説
-    answertxt=models.TextField(verbose_name='手書き解説')
+    answertxt=models.TextField(verbose_name='手書き解説',blank=True,null=True)
     
     #説明画像
     detailimg=models.ImageField(upload_to='detaileimage',blank=True,null=True,unique=False)
     
     #関連問題
     relation=models.ManyToManyField('self',verbose_name="関連分野の問題",blank=True,null=True)
+   
     
     #順番
     questionnum=models.IntegerField(verbose_name="ソート用",
