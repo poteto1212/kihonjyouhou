@@ -44,8 +44,10 @@
 {% block main %}
 <p>メインコンテンツ</p>
 <div class="boxA boxlist">
+    <h2>分野選択</h2>
     <form method="GET" action="{% url 'cbt:home' %}">
         <select name="getfield">
+            <option  value="{{default_field.id}}" selected>{{default_field.fields}}</option>
             {% for fields in field_list %}
             <option value='{{fields.id}}'>{{fields.fields}}</option>
             {% endfor %}

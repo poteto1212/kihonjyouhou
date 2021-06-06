@@ -24,6 +24,7 @@ class HomeView(ListView):
                                     'subjct__subjctsnum',
                                     'fieldnum',
                                     )
+        default_field=field_list.first()
         
         #問題一覧表示
         question_list=Detail.objects\
@@ -39,6 +40,7 @@ class HomeView(ListView):
             key=self.request.GET.get('getzone')
             subject_list=subject_list.filter(zone__id=key)
             field_list=field_list.filter(subjct__zone__id=key)
+            default_field=field_list.first()
             question_list=question_list.filter(field__subjct__zone__id=key)
         
         #科目フォーム受け取り時の表示処理
@@ -46,13 +48,14 @@ class HomeView(ListView):
             key=self.request.GET.get('getsubjects')
             subject_list=subject_list.filter(id=key)
             field_list=field_list.filter(subjct__id=key)
+            default_field=field_list.first()
             question_list=question_list.filter(field__subjct__id=key)
             
         #分野フォーム受け取り時の処理
         elif self.request.GET.get('getfield'):
             key=self.request.GET.get('getfield')
             question_list=question_list.filter(field__id=key)
-            
+            default_field=Field.objects.get(id=key)
             #科目選択時その他フォーム
             try:
                 subject_key=question_list.first()
@@ -62,9 +65,11 @@ class HomeView(ListView):
             except AttributeError:
                 field_list=field_list
                 question_list=['該当する問題はありません']
+            
                 
         context['zone_list']=zone_list
         context['subject_list']=subject_list
         context['field_list']=field_list
+        context['default_field']=default_field
         context['question_list']=question_list
         return context
