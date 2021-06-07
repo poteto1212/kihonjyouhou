@@ -13,7 +13,6 @@
         </form>
     </div>
     <div class="form2-parentfield">
-        <p>ゾーンを選択してください</p>
         <form id="form2" action="{% url 'cbt:home' %}" method="GET">
             <ul class="zoneselect">
                 {% for zones in zone_list %}
@@ -22,7 +21,7 @@
                 </li>
                 {% endfor %}
             </ul>
-            <input id="sbton" type="submit" value="選択">
+            <input id="sbton" type="submit" value="ゾーン絞り込み">
         </form>
     </div>
 </div>
