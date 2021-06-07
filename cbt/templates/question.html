@@ -3,6 +3,14 @@
 
 {% block selectvar %}
 <p>各種ボタン</p>
+<ul>
+    {% if nextquestion %}
+    <li><a href="{% url 'cbt:question' nextquestion.pk %}">次の問題へ</a></li>
+    {% endif %}
+    {% if backquestion %}
+    <li><a href="{% url 'cbt:question' backquestion.pk %}">前の問題へ</a></li>
+    {% endif %}
+</ul>
 {% endblock selectvar %}
 
 {% block listvar %}
@@ -29,7 +37,65 @@
         {% endif %}
     </div>
     <p>解答フォーム</p>
-    <form>
-    </form>
+    <div>
+        <form method="GET" action="{% url 'cbt:question' object.pk %}">
+            <label class="zonelabel"><input class="radiozone" type="checkbox" name="getanswer" value=1 >選択肢1</label>
+            <label class="zonelabel"><input class="radiozone" type="checkbox" name="getanswer" value=2 >選択肢2</label>
+            <label class="zonelabel"><input class="radiozone" type="checkbox" name="getanswer" value=3 >選択肢3</label>
+            <label class="zonelabel"><input class="radiozone" type="checkbox" name="getanswer" value=4 >選択肢4</label>
+            <label class="zonelabel"><input class="radiozone" type="checkbox" name="getanswer" value=5 >選択肢5</label>
+            <br>
+        <input type="submit" value="解答する" style="width:200px; height:60px;">
+        </form>
+    <div>
+        {% if correctback %}
+            <h2>{{correctback}}</h2>
+            
+            <h4>あなたの解答:
+        　　{% for youranswers in youranswer %}
+            <strong>{{youranswers}}</strong>
+        　　{% endfor %}
+        　　</h4>
+        　　
+        　　<h4>正答:
+            {% for collectanswers in collectanswer %}
+                <strong>{{collectanswers}}</strong>
+            {% endfor %}
+            </h4>
+        
+        {% elif failsback %}
+            <h2>{{failsback}}</h2>
+            
+            <h4>あなたの解答:
+            {% for youranswers in youranswer %}
+                <strong>{{youranswers}}</strong>
+        　　{% endfor %}
+        　　</h4>
+            
+            <h4>正答:
+            {% for collectanswers in collectanswer %}
+                <strong>{{collectanswers}}</strong>
+            {% endfor %}
+            </h4>
+        {% endif %}
+        <div>
+        {% if correctback or failsback %}
+            <div>
+                <h4>解説</h4>
+                {% if object.answerimg %}
+                <img src="{{object.answerimg.url}}">
+                {% endif %}
+                {{object.answertxt|linebreaksbr}}
+            </div>
+            <div>
+                {% if object.detailimg %}
+                <img src="{{object.detailimg.url}}">
+                {% endif %}
+            </div>
+        
+        {% endif %}
+        </div>
+    </div>
+    </div>
 </div>
 {% endblock main %}

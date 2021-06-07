@@ -80,13 +80,53 @@ class QuestionView(DetailView):
     template_name='question.html'
     model=Detail   
         
+    def get_context_data(self,**kwargs):
+        context=super().get_context_data(**kwargs)
+        correctquery=Detail.objects.get(id=self.kwargs['pk'])
+        #正答リストの準備
+        correctanswer=[
+            str(correctquery.answernum1),
+            str(correctquery.answernum2),
+            str(correctquery.answernum3)
+            ]
+        #並べ替え
+        correctanswer=sorted(correctanswer)
+        #リストからゼロを取り除く
+        correctanswer=[x for x in correctanswer if x != "0"]
+      
+        #getがある時に採点する処理
+        if self.request.GET.getlist('getanswer') and self.request.GET.getlist('getanswer')==correctanswer:
+            getanswer=self.request.GET.getlist('getanswer')
+            context['correctback']="正解!"
+            context['youranswer']=getanswer
+            context['collectanswer']=correctanswer
         
-   
+        elif self.request.GET.getlist('getanswer') and self.request.GET.getlist('getanswer')!=correctanswer:
+            getanswer=self.request.GET.getlist('getanswer')
+            context['failsback']="不正解!"
+            context['youranswer']=getanswer
+            context['collectanswer']=correctanswer
         
         
+        #問題遷移用パラメータ
+        #次の問題
+        nowquestion=correctquery.questionnum
+        nowfield=correctquery.field.id
+        nowsubjcts=correctquery.field.subjct.id
+        nextquestion=nowquestion+1
+        backquestion=nowquestion-1
         
         
+        if Detail.objects.filter(field__subjct__id=nowsubjcts,field__id=nowfield,questionnum=nextquestion).exists():
+            #次の問題へ
+            context['nextquestion']=Detail.objects.get(field__subjct__id=nowsubjcts,field__id=nowfield,questionnum=nextquestion)
         
+        if Detail.objects.filter(field__subjct__subjctsnum=nowsubjcts,field__id=nowfield,questionnum=backquestion).exists():
+            #前の問題へ
+            context['backquestion']=Detail.objects.get(field__subjct__subjctsnum=nowsubjcts,field__id=nowfield,questionnum=backquestion)
+       
+        
+        return context
         
         
         
