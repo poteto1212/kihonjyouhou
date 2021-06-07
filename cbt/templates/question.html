@@ -47,7 +47,7 @@
             <br>
         <input type="submit" value="解答する" style="width:200px; height:60px;">
         </form>
-    <div>
+    <div class="card">
         {% if correctback %}
             <h2>{{correctback}}</h2>
             
@@ -78,21 +78,23 @@
             {% endfor %}
             </h4>
         {% endif %}
-        <div>
+    </div>
         {% if correctback or failsback %}
-            <div>
-                <h4>解説</h4>
+        <div class="card">
+                <h4 class="card-title">解説</h4>
                 {% if object.answerimg %}
-                <img src="{{object.answerimg.url}}">
+                <img src="{{object.answerimg.url}}" style="width:60%;">
                 {% endif %}
+                <div class="card-footer">
                 {{object.answertxt|linebreaksbr}}
+                </div>
             </div>
-            <div>
+            <div class="card">
                 {% if object.detailimg %}
-                <img src="{{object.detailimg.url}}">
+                <img src="{{object.detailimg.url}}" style="width:60%;">
                 {% endif %}
             </div>
-        
+        </div>
         {% endif %}
         </div>
     </div>

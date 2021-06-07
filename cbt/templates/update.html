@@ -1,0 +1,23 @@
+{% load static %}
+<a href="{% url 'cbt:home' %}">ホーム画面へ</a>
+<form method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">送信</button>
+</form>
+<ul>
+    <li><a href="{% url 'cbt:updatelist' %}">問題編集一覧に戻る</a></li>
+    <li><a href="{% url 'cbt:question' object.pk %}">編集した問題へ</a></li>
+</ul>
+
+<style>
+#id_questiontxt{
+    width:80%;
+    height:300px;
+}
+
+#id_answertxt{
+    width:80%;
+    height:300px;
+}
+</style>

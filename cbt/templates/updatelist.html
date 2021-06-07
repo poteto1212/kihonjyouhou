@@ -58,7 +58,7 @@
 <div class="boxB boxlist">
     <ul>
         {% for questions in question_list %}
-        <li><a href="{% url 'cbt:question' questions.pk %}">{{questions.title}}</a></li>
+        <li><a href="{% url 'cbt:update' questions.pk %}">{{questions.title}}</a>を編集する</li>
         {% endfor %}
     </ul>
 </div>

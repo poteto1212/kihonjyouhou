@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView,DetailView,UpdateView
 from .models import Zone,Subject,Field,Detail
 from django.http import HttpResponse
-
+from django.urls import reverse
 # Create your views here.
 class HomeView(ListView):
     template_name="home.html"
@@ -128,9 +128,28 @@ class QuestionView(DetailView):
         
         return context
         
+    
+class UpdateList(HomeView):
+    template_name="updatelist.html"
         
-        
-        
+class QuestionUpdate(UpdateView):
+    template_name="update.html"
+    model=Detail
+    fields=[
+        'title',
+    'questionimg',
+    'questiontxt',
+    'answernum1',
+    'answernum2',
+    'answernum3',
+    'answerimg',
+    'answertxt',
+    'detailimg',
+    'relation',
+    ]
+    
+    def get_success_url(self):
+        return reverse('cbt:update',kwargs={'pk':self.kwargs['pk']})
         
         
         
