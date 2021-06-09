@@ -24,7 +24,7 @@ class FieldAdmin(admin.ModelAdmin):
     list_filter=('subjct__zone__zones','subjct__subjcs')
     save_as=True
     ordering=('fieldnum',)
-    search_fields=['subjct','fields','fieldnum']
+    search_fields=['subjct__subjcs','fields','fieldnum']
     raw_id_fields=('subjct',)
     
     
@@ -38,7 +38,7 @@ class DetailAdmin(admin.ModelAdmin):
     list_filter=('field__subjct__zone__zones','field__subjct__subjcs','field__fields')
     save_as=True
     ordering=('questionnum',)
-    search_fields=['field__subjct__zone__zones','field__subjct__subjcs','field__fields']
+    search_fields=['field__subjct__zone__zones','field__subjct__subjcs','field__fields','title']
     raw_id_fields=('field',)
     filter_horizontal=('relation',)
     

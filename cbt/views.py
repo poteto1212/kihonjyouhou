@@ -3,6 +3,7 @@ from django.views.generic import ListView,DetailView,UpdateView
 from .models import Zone,Subject,Field,Detail
 from django.http import HttpResponse
 from django.urls import reverse
+from django.db.models import Q
 # Create your views here.
 class HomeView(ListView):
     template_name="home.html"
@@ -34,9 +35,18 @@ class HomeView(ListView):
                                     'field__fieldnum',
                                     'questionnum'
                                     )
+        
+        #検索フォーム受け取り時
+        if self.request.GET.get('search'):
+            key=self.request.GET.get('search')
+            question_list=question_list.filter(
+                Q(title__icontains=key)|
+                Q(field__fields__icontains=key)|
+                Q(field__subjct__subjcs__icontains=key)
+                )
                                     
         #ゾーンフォーム受け取り時の表示処理
-        if self.request.GET.get('getzone'):
+        elif self.request.GET.get('getzone'):
             key=self.request.GET.get('getzone')
             subject_list=subject_list.filter(zone__id=key)
             field_list=field_list.filter(subjct__zone__id=key)

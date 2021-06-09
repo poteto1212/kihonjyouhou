@@ -7,7 +7,7 @@
 <div id="form1-container">
     <div class="form1-search">
         <p>検索フォーム作成</p>
-        <form id="form1" action="#" method="GET">
+        <form id="form1" action="{% url 'cbt:home' %}" method="GET">
             <input id="sbox" name="search" type="text" placeholder="薬品名・病名">
             <input id="sbton" type="submit" value="検索">
         </form>
